@@ -1,6 +1,18 @@
 import type { Metadata } from "next"
+import { Inter, Anuphan } from "next/font/google"
+import { ThemeProvider } from "next-themes"
 import { APP_CONFIG } from "@/config/app-config"
+import { Toaster } from "@/components/ui/sonner"
 import "./globals.css"
+
+const inter = Inter({ 
+  subsets: ["latin"],
+  variable: "--font-inter"
+})
+const anuphan = Anuphan({ 
+  subsets: ["latin"],
+  variable: "--font-anuphan"
+})
 
 export const metadata: Metadata = {
   title: {
@@ -17,9 +29,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
-        {children}
+    <html lang="en" className="light" suppressHydrationWarning>
+      <body 
+        className={`${anuphan.variable} ${inter.variable}`}
+        style={{
+          fontFamily: `var(--font-anuphan), var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`
+        }}
+      >
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   )

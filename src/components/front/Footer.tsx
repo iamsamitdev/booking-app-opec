@@ -171,19 +171,19 @@ function Footer() {
               
               <div className="flex space-x-6">
                 <Link 
-                  href="#" 
+                  href="/privacy-policy" 
                   className="text-white/60 hover:text-white/90 text-sm transition-all duration-300"
                 >
                   นโยบายความเป็นส่วนตัว
                 </Link>
                 <Link 
-                  href="#" 
+                  href="/terms-of-service" 
                   className="text-white/60 hover:text-white/90 text-sm transition-all duration-300"
                 >
                   เงื่อนไขการใช้งาน
                 </Link>
                 <Link 
-                  href="#" 
+                  href="/cookie-policy" 
                   className="text-white/60 hover:text-white/90 text-sm transition-all duration-300"
                 >
                   คุกกี้

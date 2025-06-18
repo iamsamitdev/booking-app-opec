@@ -19,7 +19,7 @@ export default function Home() {
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-gradient-to-br from-slate-800 via-slate-700 to-slate-600"
             style={{
-              backgroundImage: `url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80')`
+              backgroundImage: `url('/images/front/home_hero.avif')`
             }}
           ></div>
           
@@ -30,7 +30,7 @@ export default function Home() {
 
         {/* Hero Content */}
         <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+          <h1 className="text-5xl md:text-7xl font-bold text-white mt-6 mb-6 leading-tight">
             <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
               จองผู้เชี่ยวชาญ
             </span>
@@ -240,7 +240,7 @@ export default function Home() {
         <div 
           className="absolute inset-0"
           style={{
-            backgroundImage: `linear-gradient(rgba(30,58,138,0.8), rgba(124,58,237,0.8), rgba(236,72,153,0.8)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2942&q=80')`,
+            backgroundImage: `linear-gradient(rgba(30,58,138,0.8), rgba(124,58,237,0.8), rgba(236,72,153,0.8)), url('/images/front/home_cta.avif')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',

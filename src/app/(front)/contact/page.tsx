@@ -12,13 +12,13 @@ export default function Contact() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[70vh] flex items-center justify-center overflow-hidden -mt-24">
+      <section className="relative h-[90vh] flex items-center justify-center overflow-hidden -mt-24">
         {/* Background Image */}
         <div className="absolute inset-0 -z-10">
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-gradient-to-br from-slate-800 via-slate-700 to-slate-600"
             style={{
-              backgroundImage: `url('https://images.unsplash.com/photo-1423666639041-f56000c27a9a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80')`
+              backgroundImage: `url('/images/front/contact_hero.avif')`
             }}
           ></div>
           
@@ -172,7 +172,7 @@ export default function Contact() {
                   
                   <div>
                     <label className="block text-white/80 text-sm font-medium mb-2">หัวข้อ</label>
-                    <select className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent backdrop-blur-sm">
+                    <select className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent backdrop-blur-sm [&>option]:bg-slate-800 [&>option]:text-white">
                       <option value="">เลือกหัวข้อ</option>
                       <option value="general">สอบถามทั่วไป</option>
                       <option value="service">สอบถามบริการ</option>
@@ -316,7 +316,7 @@ export default function Contact() {
         <div 
           className="absolute inset-0"
           style={{
-            backgroundImage: `linear-gradient(rgba(30,58,138,0.8), rgba(124,58,237,0.8), rgba(236,72,153,0.8)), url('https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')`,
+            backgroundImage: `linear-gradient(rgba(30,58,138,0.8), rgba(124,58,237,0.8), rgba(236,72,153,0.8)), url('/images/front/contact_cta.avif')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',

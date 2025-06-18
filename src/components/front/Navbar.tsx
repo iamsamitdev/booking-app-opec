@@ -2,13 +2,15 @@
 
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from '@/components/ui/navigation-menu'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 
 function Navbar() {
   const pathname = usePathname()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isServiceMenuOpen, setIsServiceMenuOpen] = useState(false)
 
   const isActive = (path: string) => {
     return pathname === path
@@ -16,6 +18,20 @@ function Navbar() {
 
   const isServiceActive = () => {
     return pathname === '/service' || pathname === '/graphic' || pathname === '/marketing'
+  }
+
+  const toggleMobileMenu = () => {
+    console.log('toggleMobileMenu called, current state:', isMobileMenuOpen)
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
+
+  const toggleServiceMenu = () => {
+    setIsServiceMenuOpen(!isServiceMenuOpen)
+  }
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false)
+    setIsServiceMenuOpen(false)
   }
 
   return (
@@ -42,7 +58,7 @@ function Navbar() {
             </div>
 
             {/* Navigation Menu - ตรงกลาง (Desktop) */}
-            <div className="hidden md:flex">
+            <div className="hidden lg:flex">
               <NavigationMenu viewport={false}>
                 <NavigationMenuList className="gap-3">
                   
@@ -243,9 +259,9 @@ function Navbar() {
             </div>
 
             {/* Desktop Login Button */}
-            <div className="hidden md:flex items-center gap-3">
+            <div className="hidden lg:flex items-center gap-3">
               <Button asChild className="relative overflow-hidden !rounded-full bg-white/15 hover:bg-white/20 border border-white/25 hover:border-white/30 shadow-lg hover:shadow-xl hover:shadow-white/10 hover:scale-110 transition-all duration-300 group backdrop-blur-sm !h-12 !px-8 !py-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none focus:ring-0 focus:ring-offset-0">
-                <Link href="/login" className="relative z-10 font-medium text-white/90 hover:text-white flex items-center justify-center !h-12 !px-8 !py-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none focus:ring-0 focus:ring-offset-0">
+                <Link href="/auth/login" className="relative z-10 font-medium text-white/90 hover:text-white flex items-center justify-center !h-12 !px-8 !py-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none focus:ring-0 focus:ring-offset-0">
                   <span className="relative drop-shadow-sm">
                     เข้าสู่ระบบ
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
@@ -253,9 +269,292 @@ function Navbar() {
                 </Link>
               </Button>
             </div>
+
+            {/* Mobile Menu Button */}
+            <div className="lg:hidden flex items-center">
+              <button
+                onClick={toggleMobileMenu}
+                className="relative p-3 rounded-full bg-white/15 hover:bg-white/20 border border-white/25 hover:border-white/30 shadow-lg hover:shadow-xl hover:shadow-white/10 hover:scale-110 transition-all duration-300 backdrop-blur-sm focus:outline-none"
+              >
+                <div className="w-6 h-6 flex flex-col justify-center items-center">
+                  <span className={cn(
+                    "block w-5 h-0.5 bg-white/90 transition-all duration-300",
+                    isMobileMenuOpen ? "rotate-45 translate-y-1" : "mb-1"
+                  )}></span>
+                  <span className={cn(
+                    "block w-5 h-0.5 bg-white/90 transition-all duration-300",
+                    isMobileMenuOpen ? "opacity-0" : "mb-1"
+                  )}></span>
+                  <span className={cn(
+                    "block w-5 h-0.5 bg-white/90 transition-all duration-300",
+                    isMobileMenuOpen ? "-rotate-45 -translate-y-1" : ""
+                  )}></span>
+                </div>
+              </button>
+            </div>
           </div>
         </div>
+
+        {/* Mobile Menu - Full Screen */}
+        {isMobileMenuOpen && (
+          <div className="fixed left-0 right-0 top-0 bottom-0 z-[9999] bg-gray-50 flex flex-col h-screen w-screen !m-0 !p-0" style={{ position: 'fixed', inset: '0', margin: '0', padding: '0', borderRadius: '0' }}>
+            {/* Header */}
+            <div className="flex items-center justify-between px-5 py-4 pt-safe-or-6 border-b border-gray-200 bg-white/80 backdrop-blur-sm flex-shrink-0" style={{ paddingTop: 'max(env(safe-area-inset-top), 1.5rem)' }}>
+              <Link href="/" onClick={closeMobileMenu} className="text-2xl font-bold">
+                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  BookGeek
+                </span>
+              </Link>
+              <button
+                onClick={closeMobileMenu}
+                className="p-2 rounded-full hover:bg-gray-200 transition-colors"
+              >
+                <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Menu Items */}
+            <div className="flex-1 min-h-0 overflow-y-auto p-6 space-y-4">
+              {/* หน้าแรก */}
+              <Link
+                href="/"
+                onClick={closeMobileMenu}
+                className={cn(
+                  "flex items-center gap-4 p-4 rounded-xl transition-all duration-300",
+                  isActive('/')
+                    ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold shadow-lg"
+                    : "text-gray-600 hover:bg-gray-100"
+                )}
+              >
+                <span className="text-xl">🏠</span>
+                <span>หน้าแรก</span>
+              </Link>
+
+              {/* เกี่ยวกับเรา */}
+              <Link
+                href="/about"
+                onClick={closeMobileMenu}
+                className={cn(
+                  "flex items-center gap-4 p-4 rounded-xl transition-all duration-300",
+                  isActive('/about')
+                    ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg"
+                    : "text-gray-600 hover:bg-gray-100"
+                )}
+              >
+                <span className="text-xl">ℹ️</span>
+                <span>เกี่ยวกับเรา</span>
+              </Link>
+
+              {/* บริการ */}
+              <div className="space-y-2">
+                <button
+                  onClick={toggleServiceMenu}
+                  className={cn(
+                    "w-full flex items-center justify-between gap-4 p-4 rounded-xl transition-all duration-300",
+                    (isServiceActive() || isServiceMenuOpen)
+                      ? "bg-gray-100 text-gray-800"
+                      : "text-gray-600 hover:bg-gray-100"
+                  )}
+                >
+                  <div className="flex items-center gap-4">
+                    <span className="text-xl">💼</span>
+                    <span>บริการ</span>
+                  </div>
+                  <svg className={cn("w-5 h-5 transition-transform", isServiceMenuOpen && "rotate-180")} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {isServiceMenuOpen && (
+                  <div className="pl-8 space-y-2">
+                    {[
+                      { href: "/service", icon: "💻", label: "เทคโนโลยี" },
+                      { href: "/service#business", icon: "📈", label: "ธุรกิจ" },
+                      { href: "/service#design", icon: "🎨", label: "ดิจิทัล" },
+                      { href: "/service#finance", icon: "💰", label: "การเงิน" },
+                      { href: "/service#health", icon: "🏥", label: "สุขภาพ" },
+                      { href: "/service#education", icon: "🎓", label: "การศึกษา" }
+                    ].map(item => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={closeMobileMenu}
+                        className={cn(
+                          "flex items-center gap-3 p-3 rounded-lg transition-all duration-300",
+                          pathname === item.href
+                            ? "bg-green-100 text-green-800 font-semibold border-l-4 border-green-500"
+                            : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                        )}
+                      >
+                        <span className="text-lg">{item.icon}</span>
+                        <span>{item.label}</span>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* ติดต่อเรา */}
+              <Link
+                href="/contact"
+                onClick={closeMobileMenu}
+                className={cn(
+                  "flex items-center gap-4 p-4 rounded-xl transition-all duration-300",
+                  isActive('/contact')
+                    ? "bg-gradient-to-r from-pink-500 to-red-500 text-white font-semibold shadow-lg"
+                    : "text-gray-600 hover:bg-gray-100"
+                )}
+              >
+                <span className="text-xl">📞</span>
+                <span>ติดต่อเรา</span>
+              </Link>
+            </div>
+
+            {/* Footer Login Button */}
+            <div className="p-6 border-t border-gray-200 bg-white/80 backdrop-blur-sm flex-shrink-0">
+              <Button asChild className="w-full h-14 rounded-xl text-lg font-semibold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white shadow-lg">
+                <Link href="/login" onClick={closeMobileMenu} className="flex items-center justify-center gap-3">
+                  <span>🚀</span>
+                  <span>เข้าสู่ระบบ</span>
+                </Link>
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* Mobile Menu - Outside Nav Container */}
+      {isMobileMenuOpen && (
+        <div 
+          className="z-[9999] bg-gray-50 flex flex-col fixed top-[-20px] inset-0 w-screen h-screen m-0 p-0 rounded-none border-none outline-none"
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200 bg-white/80 backdrop-blur-sm flex-shrink-0" style={{ paddingTop: 'max(env(safe-area-inset-top), 1.5rem)' }}>
+            <Link href="/" onClick={closeMobileMenu} className="text-2xl font-bold">
+              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                BookGeek
+              </span>
+            </Link>
+            <button
+              onClick={closeMobileMenu}
+              className="p-2 rounded-full hover:bg-gray-200 transition-colors"
+            >
+              <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Menu Items */}
+          <div className="flex-1 min-h-0 overflow-y-auto p-6 space-y-4">
+            {/* หน้าแรก */}
+            <Link
+              href="/"
+              onClick={closeMobileMenu}
+              className={cn(
+                "flex items-center gap-4 p-4 rounded-xl transition-all duration-300",
+                isActive('/')
+                  ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold shadow-lg"
+                  : "text-gray-600 hover:bg-gray-100"
+              )}
+            >
+              <span className="text-xl">🏠</span>
+              <span>หน้าแรก</span>
+            </Link>
+
+            {/* เกี่ยวกับเรา */}
+            <Link
+              href="/about"
+              onClick={closeMobileMenu}
+              className={cn(
+                "flex items-center gap-4 p-4 rounded-xl transition-all duration-300",
+                isActive('/about')
+                  ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg"
+                  : "text-gray-600 hover:bg-gray-100"
+              )}
+            >
+              <span className="text-xl">ℹ️</span>
+              <span>เกี่ยวกับเรา</span>
+            </Link>
+
+            {/* บริการ */}
+            <div className="space-y-2">
+              <button
+                onClick={toggleServiceMenu}
+                className={cn(
+                  "w-full flex items-center justify-between gap-4 p-4 rounded-xl transition-all duration-300",
+                  (isServiceActive() || isServiceMenuOpen)
+                    ? "bg-gray-100 text-gray-800"
+                    : "text-gray-600 hover:bg-gray-100"
+                )}
+              >
+                <div className="flex items-center gap-4">
+                  <span className="text-xl">💼</span>
+                  <span>บริการ</span>
+                </div>
+                <svg className={cn("w-5 h-5 transition-transform", isServiceMenuOpen && "rotate-180")} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {isServiceMenuOpen && (
+                <div className="pl-8 space-y-2">
+                  {[
+                    { href: "/service", icon: "💻", label: "เทคโนโลยี" },
+                    { href: "/service#business", icon: "📈", label: "ธุรกิจ" },
+                    { href: "/service#design", icon: "🎨", label: "ดิจิทัล" },
+                    { href: "/service#finance", icon: "💰", label: "การเงิน" },
+                    { href: "/service#health", icon: "🏥", label: "สุขภาพ" },
+                    { href: "/service#education", icon: "🎓", label: "การศึกษา" }
+                  ].map(item => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={closeMobileMenu}
+                      className={cn(
+                        "flex items-center gap-3 p-3 rounded-lg transition-all duration-300",
+                        pathname === item.href
+                          ? "bg-green-100 text-green-800 font-semibold border-l-4 border-green-500"
+                          : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                      )}
+                    >
+                      <span className="text-lg">{item.icon}</span>
+                      <span>{item.label}</span>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* ติดต่อเรา */}
+            <Link
+              href="/contact"
+              onClick={closeMobileMenu}
+              className={cn(
+                "flex items-center gap-4 p-4 rounded-xl transition-all duration-300",
+                isActive('/contact')
+                  ? "bg-gradient-to-r from-pink-500 to-red-500 text-white font-semibold shadow-lg"
+                  : "text-gray-600 hover:bg-gray-100"
+              )}
+            >
+              <span className="text-xl">📞</span>
+              <span>ติดต่อเรา</span>
+            </Link>
+          </div>
+
+          {/* Footer Login Button */}
+          <div className="p-6 border-t border-gray-200 bg-white/80 backdrop-blur-sm flex-shrink-0">
+            <Button asChild className="w-full h-14 rounded-xl text-lg font-semibold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white shadow-lg">
+              <Link href="/auth/login" onClick={closeMobileMenu} className="flex items-center justify-center gap-3">
+                  <span>🚀</span>
+                  <span>เข้าสู่ระบบ</span>
+              </Link>
+            </Button>
+          </div>
+        </div>
+      )}
     </nav>
   )
 }

@@ -12,14 +12,14 @@ export default function About() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[70vh] flex items-center justify-center overflow-hidden -mt-24">
+      <section className="relative h-[90vh] flex items-center justify-center overflow-hidden -mt-24">
         {/* Background Image */}
         <div className="absolute inset-0 -z-10">
           {/* Background Image */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-gradient-to-br from-slate-800 via-slate-700 to-slate-600"
             style={{
-              backgroundImage: `url('https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80')`
+              backgroundImage: `url('/images/front/about_hero.avif')`
             }}
           ></div>
           
@@ -30,7 +30,7 @@ export default function About() {
 
         {/* Hero Content */}
         <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mt-6 mb-6 leading-tight">
             เกี่ยวกับ <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">BookGeek</span>
           </h1>
           
@@ -166,25 +166,25 @@ export default function About() {
               {
                 name: "สมชาย ใจดี",
                 position: "CEO & Co-Founder",
-                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80",
+                image: "/images/front/about_team_somchai.avif",
                 description: "ผู้ริเริ่มแนวคิด BookGeek ด้วยประสบการณ์ 15 ปีในวงการเทคโนโลยี"
               },
               {
                 name: "สมหญิง รักเรียน",
                 position: "CTO & Co-Founder",
-                image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80",
+                image: "/images/front/about_team_somying.avif",
                 description: "ผู้เชี่ยวชาญด้านเทคโนโลยี นำทีมพัฒนาแพลตฟอร์มที่ทันสมัย"
               },
               {
                 name: "สมศักดิ์ ใฝ่รู้",
                 position: "Head of Product",
-                image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80",
+                image: "/images/front/about_team_somsak.avif",
                 description: "ผู้ออกแบบประสบการณ์ผู้ใช้ให้ใช้งานง่ายและสะดวก"
               },
               {
                 name: "สมใจ ช่วยเหลือ",
                 position: "Head of Customer Success",
-                image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80",
+                image: "/images/front/about_team_somjai.avif",
                 description: "ดูแลความพึงพอใจของลูกค้าและสร้างความสัมพันธ์ที่ยั่งยืน"
               }
             ].map((member, index) => (
@@ -216,7 +216,7 @@ export default function About() {
         <div 
           className="absolute inset-0"
           style={{
-            backgroundImage: `linear-gradient(rgba(30,58,138,0.8), rgba(124,58,237,0.8), rgba(236,72,153,0.8)), url('https://images.unsplash.com/photo-1515187029135-18ee286d815b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')`,
+            backgroundImage: `linear-gradient(rgba(30,58,138,0.8), rgba(124,58,237,0.8), rgba(236,72,153,0.8)), url('/images/front/about_mission.avif')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
