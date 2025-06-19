@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useState } from "react"
-import { Eye, EyeOff } from "lucide-react"
+import { Eye, EyeOff, AlertCircle } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -24,8 +24,12 @@ const FormSchema = z.object({
 export function LoginForm() {
   const { login } = useAuth()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  
+  // ดึง callback URL จาก query parameters
+  const callbackUrl = searchParams.get('callbackUrl') || '/admin/dashboard'
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -53,8 +57,8 @@ export function LoginForm() {
         descriptionClassName: "!text-white",
       })
 
-      // Redirect to home page or dashboard
-      router.push("/admin/dashboard")
+      // Redirect to callback URL หรือ dashboard
+      router.push(callbackUrl)
     } catch (error) {
       toast.error("เกิดข้อผิดพลาด", {
         description: error instanceof Error ? error.message : "ไม่สามารถเข้าสู่ระบบได้ กรุณาลองใหม่อีกครั้ง",
@@ -72,6 +76,20 @@ export function LoginForm() {
 
   return (
     <Form {...form}>
+      {/* แสดงข้อความเตือนเมื่อมี callback URL */}
+      {searchParams.get('callbackUrl') && (
+        <div className="mb-4 p-4 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-3">
+          <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5 flex-shrink-0" />
+          <div className="text-sm">
+            <p className="text-amber-800 font-medium mb-1">
+              กรุณาเข้าสู่ระบบเพื่อเข้าถึงหน้าดังกล่าว
+            </p>
+            <p className="text-amber-700">
+              คุณจะถูกนำไปยัง <span className="font-mono text-xs bg-amber-100 px-1 py-0.5 rounded">{callbackUrl}</span> หลังจากเข้าสู่ระบบสำเร็จ
+            </p>
+          </div>
+        </div>
+      )}
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
