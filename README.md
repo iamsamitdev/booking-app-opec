@@ -1,6 +1,6 @@
 # 📚 BookGeek - ระบบจองผู้เชี่ยวชาญและวิทยากร
 
-BookGeek เป็นแพลตฟอร์มออนไลน์สำหรับการจองผู้เชี่ยวชาญและวิทยากรในด้านต่างๆ ออกแบบด้วย Next.js 15, TypeScript, Prisma และ Tailwind CSS พร้อมด้วย UI/UX ที่ทันสมัยและ responsive
+BookGeek เป็นแพลตฟอร์มออนไลน์สำหรับการจองผู้เชี่ยวชาญและวิทยากรในด้านต่างๆ ออกแบบด้วย Next.js 15, TypeScript, Prisma และ Tailwind CSS พร้อมด้วย UI/UX ที่ทันสมัยและ responsive รวมถึงระบบ Admin Dashboard สำหรับการจัดการ
 
 ## ✨ คุณสมบัติหลัก
 
@@ -16,6 +16,14 @@ BookGeek เป็นแพลตฟอร์มออนไลน์สำห�
 - **ลืมรหัสผ่าน**: ระบบรีเซ็ตรหัสผ่าน
 - **API Routes**: `/api/auth/login`, `/api/auth/register`, `/api/auth/logout`, `/api/auth/me`
 - **Session Management**: การจัดการ session และ authentication state
+
+### 🎛️ Admin Dashboard
+- **Dashboard หลัก**: สถิติรายได้, ลูกค้าใหม่, บัญชีที่ใช้งาน, อัตราการเติบโต
+- **การจัดการผู้ใช้**: ระบบ CRUD ผู้ใช้แบบสมบูรณ์ พร้อม Data Table
+- **Data Tables**: ตารางข้อมูลที่ทันสมัยพร้อมการค้นหา, เรียงลำดับ, และ pagination
+- **Modal Dialogs**: ป๊อปอัพสำหรับเพิ่ม, แก้ไข, ดู และลบข้อมูล
+- **Responsive Sidebar**: เมนูด้านข้างที่รองรับ desktop และ mobile
+- **Real-time Updates**: อัพเดทข้อมูลแบบ real-time
 
 ### 🗄️ ฐานข้อมูล (Prisma)
 - **User Model**: จัดการข้อมูลผู้ใช้ (fullName, email, phoneNumber, password)
@@ -49,20 +57,30 @@ BookGeek เป็นแพลตฟอร์มออนไลน์สำห�
 
 ### Styling & UI
 - **Tailwind CSS 4** - Utility-first CSS framework
+- **shadcn/ui** - Modern UI component library
 - **Radix UI** - Headless UI components
-- **Lucide React** - Icon library (Eye, EyeOff icons)
+- **Lucide React** - Icon library (Eye, EyeOff, Menu icons)
 - **Sonner** - Toast notifications system
-- **tw-animate-css** - Animation utilities
+- **Recharts** - Chart library สำหรับ dashboard
+- **TanStack Table** - Advanced data table functionality
 
 ### Form & Validation
 - **React Hook Form** - Form management
 - **Zod** - Schema validation
 - **@hookform/resolvers** - Form validation resolvers
 
+### Admin Dashboard Components
+- **Data Tables** - Advanced table with sorting, filtering, pagination
+- **Sidebar Navigation** - Collapsible sidebar with icons
+- **Modal Dialogs** - Add, Edit, View, Delete dialogs
+- **Charts & Analytics** - Interactive charts และ metrics
+- **Command Palette** - Quick search และ navigation
+
 ### Additional Features
 - **Next Themes** - Dark/Light mode support
 - **Class Variance Authority** - Component variants
 - **clsx & tailwind-merge** - Conditional styling
+- **React DnD** - Drag and drop functionality (ถ้าใช้)
 
 ## 📁 โครงสร้างโปรเจ็กต์
 
@@ -100,6 +118,27 @@ booking-app-opec/
 │   │   │   ├── privacy-policy/
 │   │   │   ├── terms-of-service/
 │   │   │   └── cookie-policy/
+│   │   ├── (back)/       # Admin Dashboard (Route Group)
+│   │   │   ├── layout.tsx # Admin layout with sidebar
+│   │   │   └── admin/
+│   │   │       ├── dashboard/
+│   │   │       │   ├── _components/
+│   │   │       │   │   ├── account-switcher.tsx
+│   │   │       │   │   ├── chart-area-interactive.tsx
+│   │   │       │   │   ├── section-cards.tsx
+│   │   │       │   │   ├── search-dialog.tsx
+│   │   │       │   │   └── table-cell-viewer.tsx
+│   │   │       │   └── page.tsx
+│   │   │       └── users/
+│   │   │           ├── _components/
+│   │   │           │   ├── add-user-dialog.tsx
+│   │   │           │   ├── columns.tsx
+│   │   │           │   ├── data-table.tsx
+│   │   │           │   ├── delete-user-dialog.tsx
+│   │   │           │   ├── edit-user-dialog.tsx
+│   │   │           │   ├── mock-data.ts
+│   │   │           │   └── view-user-dialog.tsx
+│   │   │           └── page.tsx
 │   │   ├── api/          # API Routes
 │   │   │   └── auth/
 │   │   │       ├── login/route.ts
@@ -124,24 +163,56 @@ booking-app-opec/
 │   │   └── favicon.ico
 │   ├── components/
 │   │   ├── ui/           # UI components (shadcn/ui)
+│   │   │   ├── avatar.tsx
+│   │   │   ├── badge.tsx
 │   │   │   ├── button.tsx
+│   │   │   ├── card.tsx
+│   │   │   ├── chart.tsx
 │   │   │   ├── checkbox.tsx
+│   │   │   ├── collapsible.tsx
+│   │   │   ├── command.tsx
+│   │   │   ├── dialog.tsx
+│   │   │   ├── dropdown-menu.tsx
 │   │   │   ├── form.tsx
 │   │   │   ├── input.tsx
 │   │   │   ├── label.tsx
 │   │   │   ├── navigation-menu.tsx
-│   │   │   └── sonner.tsx
-│   │   └── front/        # Frontend components
-│   │       ├── Navbar.tsx # Navigation with auth state
-│   │       └── Footer.tsx
+│   │   │   ├── select.tsx
+│   │   │   ├── separator.tsx
+│   │   │   ├── sheet.tsx
+│   │   │   ├── sidebar.tsx
+│   │   │   ├── skeleton.tsx
+│   │   │   ├── sonner.tsx
+│   │   │   ├── table.tsx
+│   │   │   ├── tabs.tsx
+│   │   │   └── tooltip.tsx
+│   │   ├── front/        # Frontend components
+│   │   │   ├── Navbar.tsx # Navigation with auth state
+│   │   │   └── Footer.tsx
+│   │   └── back/         # Admin components
+│   │       ├── app-sidebar.tsx
+│   │       ├── nav-main.tsx
+│   │       ├── nav-user.tsx
+│   │       └── data-table/
+│   │           ├── data-table.tsx
+│   │           ├── data-table-column-header.tsx
+│   │           ├── data-table-pagination.tsx
+│   │           └── data-table-view-options.tsx
 │   ├── hooks/
-│   │   └── useAuth.tsx   # Authentication hook
+│   │   ├── useAuth.tsx   # Authentication hook
+│   │   ├── use-mobile.ts # Mobile detection
+│   │   └── use-data-table-instance.ts # Data table utilities
 │   ├── lib/
 │   │   ├── auth.ts       # Auth utilities
 │   │   ├── prisma.ts     # Prisma client
 │   │   └── utils.ts      # Utility functions
 │   ├── config/
 │   │   └── app-config.ts # App configuration
+│   ├── data/
+│   │   └── users.tsx     # User data utilities
+│   ├── navigation/
+│   │   └── sidebar/
+│   │       └── sidebar-items.ts # Sidebar menu configuration
 │   └── generated/        # Generated files
 ├── .env.example          # Environment variables template
 ├── components.json       # shadcn/ui configuration
@@ -254,6 +325,35 @@ model User {
 }
 ```
 
+## 🎛️ Admin Dashboard System
+
+### Dashboard Features
+- **Overview Cards**: แสดงสถิติรายได้, ลูกค้าใหม่, บัญชีที่ใช้งาน, อัตราการเติบโต
+- **Interactive Charts**: กราฟแบบ interactive สำหรับติดตามประสิทธิภาพ
+- **Quick Search**: ค้นหาข้อมูลอย่างรวดเร็วด้วย Command Dialog
+- **Account Switcher**: เปลี่ยนบัญชีผู้ใช้ที่ login อยู่
+
+### User Management
+- **Data Table**: ตารางข้อมูลผู้ใช้พร้อมการเรียงลำดับและค้นหา
+- **CRUD Operations**: เพิ่ม, แก้ไข, ดู, และลบผู้ใช้
+- **Modal Dialogs**: ป๊อปอัพสำหรับจัดการข้อมูล
+- **Form Validation**: ตรวจสอบข้อมูลก่อนบันทึก
+- **Real-time Updates**: อัพเดทข้อมูลทันที
+
+### Sidebar Navigation
+- **Collapsible Sidebar**: เมนูด้านข้างที่ย่อ/ขยายได้
+- **Icon Mode**: แสดงเฉพาะไอคอนเมื่อย่อ
+- **Responsive Design**: ปรับตัวตามขนาดหน้าจอ
+- **User Profile**: แสดงข้อมูลผู้ใช้ที่ login
+
+### Data Table Features
+- **Column Sorting**: เรียงลำดับตามคอลัมน์
+- **Global Search**: ค้นหาข้อมูลทั้งตาราง
+- **Pagination**: แบ่งหน้าข้อมูล
+- **Row Selection**: เลือกแถวข้อมูล
+- **Column Visibility**: แสดง/ซ่อนคอลัมน์
+- **Export Options**: ส่งออกข้อมูล (ถ้าเพิ่ม)
+
 ## 🎨 การใช้งาน Design System
 
 ### Toast Notifications
@@ -279,6 +379,53 @@ toast.error("เกิดข้อผิดพลาด", {
   },
   descriptionClassName: "!text-white",
 })
+```
+
+### Admin Dashboard Components
+
+#### Data Table with CRUD
+```tsx
+// Column Definition
+const columns = createUserColumns({
+  onEditUser: (user) => setEditingUser(user),
+  onDeleteUser: (user) => setDeletingUser(user),
+  onAddUser: () => setIsAddUserOpen(true),
+})
+
+// Data Table Usage
+<DataTable
+  columns={columns}
+  data={users}
+  searchKey="fullName"
+  searchPlaceholder="ค้นหาชื่อผู้ใช้..."
+/>
+```
+
+#### Modal Dialogs
+```tsx
+// Add User Dialog
+<AddUserDialog
+  open={isAddUserOpen}
+  onOpenChange={setIsAddUserOpen}
+  onUserAdded={handleUserAdded}
+/>
+
+// Edit User Dialog
+<EditUserDialog
+  open={!!editingUser}
+  onOpenChange={() => setEditingUser(null)}
+  user={editingUser}
+  onUserUpdated={handleUserUpdated}
+/>
+```
+
+#### Sidebar Navigation
+```tsx
+<AppSidebar 
+  variant="sidebar" 
+  collapsible="icon"
+  className="border-r"
+/>
 ```
 
 ### Password Input with Toggle
@@ -379,11 +526,21 @@ xl: 1280px
 - **Profile Menu**: แสดงข้อมูลผู้ใช้และเมนูจัดการบัญชี
 - **Logout**: ออกจากระบบและ redirect ไป login page
 
+### Admin Dashboard Features
+- **Responsive Layout**: รองรับทุกขนาดหน้าจอ
+- **Sidebar Navigation**: เมนูด้านข้างที่ย่อ/ขยายได้
+- **Data Management**: จัดการข้อมูลผู้ใช้แบบครบถ้วน
+- **Interactive Charts**: กราฟสถิติแบบ interactive
+- **Search & Filter**: ค้นหาและกรองข้อมูลอย่างรวดเร็ว
+- **Modal System**: ระบบ modal สำหรับ CRUD operations
+- **Toast Notifications**: แจ้งเตือนผลการดำเนินการ
+
 ### Database Features
 - **User Management**: CRUD operations สำหรับผู้ใช้
 - **Type Safety**: Prisma Client ให้ type safety ทั้งระบบ
 - **Migrations**: ระบบ migration สำหรับจัดการ database schema
 - **Development Tools**: Prisma Studio สำหรับดู/แก้ไขข้อมูล
+- **Mock Data**: ข้อมูลตัวอย่าง 25 รายการสำหรับทดสอบ
 
 ### Image Optimization
 - **Format**: AVIF สำหรับประสิทธิภาพสูงสุด
@@ -414,6 +571,28 @@ npm run start
 - **PostgreSQL**: แนะนำสำหรับ production
 - **MySQL**: ทางเลือกที่ดี
 - **SQLite**: เหมาะสำหรับ development เท่านั้น
+
+## 🔗 การเข้าถึงระบบ
+
+### หน้าเว็บหลัก (Frontend)
+- **หน้าแรก**: `/`
+- **เกี่ยวกับเรา**: `/about`
+- **บริการ**: `/service`
+- **ติดต่อเรา**: `/contact`
+
+### Authentication
+- **เข้าสู่ระบบ**: `/auth/login`
+- **สมัครสมาชิก**: `/auth/register`
+- **ลืมรหัสผ่าน**: `/auth/forgotpassword`
+
+### Admin Dashboard
+- **Dashboard**: `/admin/dashboard`
+- **จัดการผู้ใช้**: `/admin/users`
+
+### นโยบายและเงื่อนไข
+- **นโยบายความเป็นส่วนตัว**: `/privacy-policy`
+- **เงื่อนไขการใช้งาน**: `/terms-of-service`
+- **นโยบายคุกกี้**: `/cookie-policy`
 
 ## 🤝 การมีส่วนร่วม
 
