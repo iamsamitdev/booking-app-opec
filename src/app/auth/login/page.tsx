@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { Suspense } from "react"
 
 import Link from "next/link"
 
@@ -60,7 +61,14 @@ export default function Login() {
             </div>
           </div>
           <div className="space-y-4">
-            <LoginForm />
+            <Suspense fallback={<div className="space-y-4">
+              <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+              <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
+              <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
+              <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
+            </div>}>
+              <LoginForm />
+            </Suspense>
             <Button className="w-full" variant="outline">
               เข้าสู่ระบบด้วย Google
             </Button>
