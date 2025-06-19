@@ -24,6 +24,8 @@ BookGeek เป็นแพลตฟอร์มออนไลน์สำห�
 - **Modal Dialogs**: ป๊อปอัพสำหรับเพิ่ม, แก้ไข, ดู และลบข้อมูล
 - **Responsive Sidebar**: เมนูด้านข้างที่รองรับ desktop และ mobile
 - **Real-time Updates**: อัพเดทข้อมูลแบบ real-time
+- **Route Protection**: ป้องกันการเข้าถึง admin routes โดยไม่ได้ login
+- **Authentication Guard**: ตรวจสอบ authentication แบบ client-side และ server-side
 
 ### 🗄️ ฐานข้อมูล (Prisma)
 - **User Model**: จัดการข้อมูลผู้ใช้ (fullName, email, phoneNumber, password)
@@ -75,6 +77,8 @@ BookGeek เป็นแพลตฟอร์มออนไลน์สำห�
 - **Modal Dialogs** - Add, Edit, View, Delete dialogs
 - **Charts & Analytics** - Interactive charts และ metrics
 - **Command Palette** - Quick search และ navigation
+- **Authentication Guard** - Client-side route protection
+- **Middleware Protection** - Server-side route protection
 
 ### Additional Features
 - **Next Themes** - Dark/Light mode support
@@ -191,6 +195,7 @@ booking-app-opec/
 │   │   │   └── Footer.tsx
 │   │   └── back/         # Admin components
 │   │       ├── app-sidebar.tsx
+│   │       ├── auth-guard.tsx
 │   │       ├── nav-main.tsx
 │   │       ├── nav-user.tsx
 │   │       └── data-table/
@@ -214,6 +219,7 @@ booking-app-opec/
 │   │   └── sidebar/
 │   │       └── sidebar-items.ts # Sidebar menu configuration
 │   └── generated/        # Generated files
+├── middleware.ts         # Next.js middleware สำหรับ route protection
 ├── .env.example          # Environment variables template
 ├── components.json       # shadcn/ui configuration
 ├── next.config.ts        # Next.js configuration
@@ -251,9 +257,15 @@ booking-app-opec/
 
 3. **ตั้งค่า Environment Variables**
    ```bash
-   cp .env.example .env
+   # สร้างไฟล์ .env ในโฟลเดอร์ root
+   touch .env
    ```
-   แก้ไขไฟล์ `.env` ตามความต้องการ
+   เพิ่มข้อมูลดังนี้ในไฟล์ `.env`:
+   ```env
+   DATABASE_URL="file:./dev.db"
+   JWT_SECRET="your-super-secret-jwt-key-change-this-in-production"
+   JWT_EXPIRES_IN="7d"
+   ```
 
 4. **ตั้งค่าฐานข้อมูล (Prisma)**
    ```bash
@@ -340,6 +352,14 @@ model User {
 - **Form Validation**: ตรวจสอบข้อมูลก่อนบันทึก
 - **Real-time Updates**: อัพเดทข้อมูลทันที
 
+### Authentication & Security
+- **Middleware Protection**: ป้องกันการเข้าถึง admin routes ด้วย Next.js middleware
+- **Client-side Guard**: ตรวจสอบ authentication ด้วย React components
+- **Cookie-based Auth**: ใช้ HTTP-only cookies สำหรับความปลอดภัย
+- **JWT Token Validation**: ตรวจสอบ JWT tokens ใน API routes
+- **Automatic Redirect**: redirect ไปหน้า login พร้อม callback URL
+- **Loading States**: แสดง skeleton loading ขณะตรวจสอบ auth
+
 ### Sidebar Navigation
 - **Collapsible Sidebar**: เมนูด้านข้างที่ย่อ/ขยายได้
 - **Icon Mode**: แสดงเฉพาะไอคอนเมื่อย่อ
@@ -419,6 +439,45 @@ const columns = createUserColumns({
 />
 ```
 
+#### Authentication Guard
+```tsx
+// Admin Layout with Authentication Guard
+<AuthProvider>
+  <AuthGuard>
+    <SidebarProvider defaultOpen={defaultOpen}>
+      <AppSidebar variant="sidebar" collapsible="icon" />
+      {/* Admin Content */}
+    </SidebarProvider>
+  </AuthGuard>
+</AuthProvider>
+```
+
+#### Middleware Protection
+```tsx
+// middleware.ts
+export function middleware(request: NextRequest) {
+  const isAdminRoute = request.nextUrl.pathname.startsWith('/admin')
+  
+  if (!isAdminRoute) {
+    return NextResponse.next()
+  }
+
+  const authToken = request.cookies.get('auth-token')?.value
+  
+  if (!authToken) {
+    const loginUrl = new URL('/auth/login', request.url)
+    loginUrl.searchParams.set('callbackUrl', request.nextUrl.pathname)
+    return NextResponse.redirect(loginUrl)
+  }
+
+  return NextResponse.next()
+}
+
+export const config = {
+  matcher: ['/admin/:path*'],
+}
+```
+
 #### Sidebar Navigation
 ```tsx
 <AppSidebar 
@@ -486,10 +545,16 @@ const columns = createUserColumns({
 # Database
 DATABASE_URL="file:./dev.db"
 
-# Authentication (ถ้าใช้)
-NEXTAUTH_SECRET="your-secret-here"
+# JWT Configuration (จำเป็น)
+JWT_SECRET="your-super-secret-jwt-key-change-this-in-production"
+JWT_EXPIRES_IN="7d"
+
+# NextAuth (ถ้าใช้ในอนาคต)
+NEXTAUTH_SECRET="your-nextauth-secret-change-this-in-production"
 NEXTAUTH_URL="http://localhost:3000"
 ```
+
+**⚠️ สำคัญ**: กรุณาสร้างไฟล์ `.env` ในโฟลเดอร์ root และเพิ่ม `JWT_SECRET` และ `JWT_EXPIRES_IN` เพื่อให้ระบบ authentication ทำงานได้
 
 ### Fonts
 - **ภาษาไทย**: Anuphan (Google Fonts)
@@ -534,6 +599,9 @@ xl: 1280px
 - **Search & Filter**: ค้นหาและกรองข้อมูลอย่างรวดเร็ว
 - **Modal System**: ระบบ modal สำหรับ CRUD operations
 - **Toast Notifications**: แจ้งเตือนผลการดำเนินการ
+- **Route Protection**: ป้องกันการเข้าถึงโดยไม่ได้รับอนุญาต
+- **Authentication Guard**: ตรวจสอบสิทธิ์การเข้าถึงแบบ real-time
+- **Automatic Logout**: ออกจากระบบอัตโนมัติเมื่อ token หมดอายุ
 
 ### Database Features
 - **User Management**: CRUD operations สำหรับผู้ใช้
@@ -585,7 +653,7 @@ npm run start
 - **สมัครสมาชิก**: `/auth/register`
 - **ลืมรหัสผ่าน**: `/auth/forgotpassword`
 
-### Admin Dashboard
+### Admin Dashboard (🔒 Protected Routes)
 - **Dashboard**: `/admin/dashboard`
 - **จัดการผู้ใช้**: `/admin/users`
 
@@ -593,6 +661,13 @@ npm run start
 - **นโยบายความเป็นส่วนตัว**: `/privacy-policy`
 - **เงื่อนไขการใช้งาน**: `/terms-of-service`
 - **นโยบายคุกกี้**: `/cookie-policy`
+
+### 🛡️ Security Features
+- **Middleware Protection**: ทุก admin routes ได้รับการป้องกันด้วย middleware
+- **Authentication Redirect**: redirect อัตโนมัติไปหน้า login พร้อม callback URL
+- **Session Management**: จัดการ session ด้วย HTTP-only cookies
+- **Token Validation**: ตรวจสอบ JWT tokens ใน API routes
+- **Client-side Guards**: ป้องกันการเข้าถึงด้วย React components
 
 ## 🤝 การมีส่วนร่วม
 
