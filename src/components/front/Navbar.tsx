@@ -4,54 +4,65 @@ import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMe
 import Link from 'next/link'
 import React, { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
 
+// สร้าง component สำหรับการสร้าง Navbar
 function Navbar() {
-  const { user, logout, isLoading } = useAuth()
-  const pathname = usePathname()
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isServiceMenuOpen, setIsServiceMenuOpen] = useState(false)
-  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
-  const profileMenuRef = useRef<HTMLDivElement>(null)
 
+  const { user, logout, isLoading } = useAuth() // เรียกใช้งาน hook สำหรับการจัดการการยืนยันตัวตน
+  const pathname = usePathname() // เรียกใช้ usePathname สำหรับกำหนดเส้นทางของหน้านั้นๆ
+  const router = useRouter() // เรียกใช้ useRouter สำหรับกำหนดเส้นทางของหน้านั้นๆ
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false) // สร้างฟังก์ชันสำหรับการสลับการเปิดปิดหน้าต่างของระบบ
+  const [isServiceMenuOpen, setIsServiceMenuOpen] = useState(false) // สร้างฟังก์ชันสำหรับการสลับการเปิดปิดหน้าต่างของระบบ
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false) // สร้างฟังก์ชันสำหรับการสลับการเปิดปิดหน้าต่างของระบบ
+  const profileMenuRef = useRef<HTMLDivElement>(null) // สร้างฟังก์ชันสำหรับการสลับการเปิดปิดหน้าต่างของระบบ
+
+  // สร้างฟังก์ชันสำหรับการตรวจสอบว่าหน้านั้นๆ ถูกเลือกหรือไม่
   const isActive = (path: string) => {
     return pathname === path
   }
 
+  // สร้างฟังก์ชันสำหรับการตรวจสอบว่าหน้านั้นๆ ถูกเลือกหรือไม่
   const isServiceActive = () => {
     return pathname === '/service' || pathname === '/graphic' || pathname === '/marketing'
   }
 
+  // สร้างฟังก์ชันสำหรับการสลับการเปิดปิดหน้าต่างของระบบ
   const toggleMobileMenu = () => {
     console.log('toggleMobileMenu called, current state:', isMobileMenuOpen)
     setIsMobileMenuOpen(!isMobileMenuOpen)
   }
 
+  // สร้างฟังก์ชันสำหรับการสลับการเปิดปิดหน้าต่างของระบบ
   const toggleServiceMenu = () => {
     setIsServiceMenuOpen(!isServiceMenuOpen)
   }
 
+  // สร้างฟังก์ชันสำหรับการปิดหน้าต่างของระบบ
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false)
     setIsServiceMenuOpen(false)
   }
 
+  // สร้างฟังก์ชันสำหรับการสลับการเปิดปิดหน้าต่างของระบบ
   const toggleProfileMenu = () => {
     setIsProfileMenuOpen(!isProfileMenuOpen)
   }
 
+  // สร้างฟังก์ชันสำหรับการออกจากระบบ
   const handleLogout = async () => {
     try {
       await logout()
       setIsProfileMenuOpen(false)
+      router.push('/auth/login')
     } catch (error) {
       console.error('Logout error:', error)
     }
   }
 
-  // Close profile menu when clicking outside
+  // สร้างฟังก์ชันสำหรับการปิดหน้าต่างของระบบ
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
@@ -65,6 +76,7 @@ function Navbar() {
     }
   }, [])
 
+  // สร้างฟังก์ชันสำหรับการสร้าง Navbar
   return (
     <nav className='w-full fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4'>
       <div className="max-w-screen-2xl mx-auto">

@@ -22,14 +22,14 @@ export function ForgotPasswordForm() {
   })
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    toast("ส่งลิงก์รีเซ็ตรหัสผ่านแล้ว", {
-      description: (
-        <div className="mt-2">
-          <p className="text-white">เราได้ส่งลิงก์สำหรับรีเซ็ตรหัสผ่านไปยังอีเมล:</p>
-          <p className="text-blue-300 font-semibold">{data.email}</p>
-          <p className="text-white/80 text-sm mt-1">กรุณาตรวจสอบอีเมลของคุณ</p>
-        </div>
-      ),
+    toast.success("ส่งลิงก์รีเซ็ตรหัสผ่านแล้ว", {
+      description: `เราได้ส่งลิงก์สำหรับรีเซ็ตรหัสผ่านไปยังอีเมล: ${data.email} กรุณาตรวจสอบอีเมลของคุณ`,
+      style: {
+        background: "#10b981",
+        color: "#ffffff",
+        border: "1px solid #059669",
+      },
+      descriptionClassName: "!text-white",
     })
   }
 

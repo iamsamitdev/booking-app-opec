@@ -7,6 +7,7 @@ import { z } from "zod"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { Eye, EyeOff } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -24,6 +25,7 @@ export function LoginForm() {
   const { login } = useAuth()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -43,13 +45,25 @@ export function LoginForm() {
 
       toast.success("เข้าสู่ระบบสำเร็จ!", {
         description: "ยินดีต้อนรับกลับมา",
+        style: {
+          background: "#10b981",
+          color: "#ffffff",
+          border: "1px solid #059669",
+        },
+        descriptionClassName: "!text-white",
       })
 
       // Redirect to home page or dashboard
-      router.push("/")
+      router.push("/admin/dashboard")
     } catch (error) {
       toast.error("เกิดข้อผิดพลาด", {
         description: error instanceof Error ? error.message : "ไม่สามารถเข้าสู่ระบบได้ กรุณาลองใหม่อีกครั้ง",
+        style: {
+          background: "#ef4444",
+          color: "#ffffff",
+          border: "1px solid #dc2626",
+        },
+        descriptionClassName: "!text-white",
       })
     } finally {
       setIsLoading(false)
@@ -79,13 +93,26 @@ export function LoginForm() {
             <FormItem>
               <FormLabel>รหัสผ่าน</FormLabel>
               <FormControl>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  autoComplete="current-password"
-                  {...field}
-                />
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    autoComplete="current-password"
+                    {...field}
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>

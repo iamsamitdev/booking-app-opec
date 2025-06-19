@@ -7,6 +7,7 @@ import { z } from "zod"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { Eye, EyeOff } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
@@ -34,6 +35,8 @@ export function RegisterForm() {
   const { register } = useAuth()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -61,6 +64,12 @@ export function RegisterForm() {
 
       toast.success("สมัครสมาชิกสำเร็จ! ยินดีต้อนรับสู่ BookGeek", {
         description: "คุณสามารถเริ่มจองผู้เชี่ยวชาญได้ทันที",
+        style: {
+          background: "#10b981",
+          color: "#ffffff",
+          border: "1px solid #059669",
+        },
+        descriptionClassName: "!text-white",
       })
 
       // Redirect to home page or dashboard
@@ -68,6 +77,12 @@ export function RegisterForm() {
     } catch (error) {
       toast.error("เกิดข้อผิดพลาด", {
         description: error instanceof Error ? error.message : "ไม่สามารถสมัครสมาชิกได้ กรุณาลองใหม่อีกครั้ง",
+        style: {
+          background: "#ef4444",
+          color: "#ffffff",
+          border: "1px solid #dc2626",
+        },
+        descriptionClassName: "!text-white",
       })
     } finally {
       setIsLoading(false)
@@ -131,7 +146,26 @@ export function RegisterForm() {
               <FormItem>
                 <FormLabel>รหัสผ่าน</FormLabel>
                 <FormControl>
-                  <Input id="password" type="password" placeholder="••••••••" autoComplete="new-password" {...field} />
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="••••••••"
+                      autoComplete="new-password"
+                      {...field}
+                    />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -144,13 +178,26 @@ export function RegisterForm() {
               <FormItem>
                 <FormLabel>ยืนยันรหัสผ่าน</FormLabel>
                 <FormControl>
-                  <Input
-                    id="confirmPassword"
-                    type="password"
-                    placeholder="••••••••"
-                    autoComplete="new-password"
-                    {...field}
-                  />
+                  <div className="relative">
+                    <Input
+                      id="confirmPassword"
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder="••••••••"
+                      autoComplete="new-password"
+                      {...field}
+                    />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>

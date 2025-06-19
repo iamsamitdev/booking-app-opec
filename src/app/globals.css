@@ -1,8 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* กำหนดรูปแบบของพื้นหลัง */
 @custom-variant dark (&:is(.dark *));
 
+/* กำหนดรูปแบบของพื้นหลัง */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -43,6 +45,7 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+/* กำหนดรูปแบบของพื้นหลังในรูปแบบสว่าง */
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -78,6 +81,7 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* กำหนดรูปแบบของพื้นหลังในรูปแบบมืด */
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -112,11 +116,36 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* กำหนดรูปแบบของพื้นหลัง */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  /* กำหนดรูปแบบของพื้นหลัง */
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* กำหนดรูปแบบของ Toast */
+@layer components {
+  /* กำหนดรูปแบบของ Toast สำหรับการแสดงข้อความสำเร็จ */
+  [data-sonner-toast][data-type="success"] [data-description] {
+    color: white !important;
+  }
+  
+  /* กำหนดรูปแบบของ Toast สำหรับการแสดงข้อความผิดพลาด */
+  [data-sonner-toast][data-type="error"] [data-description] {
+    color: white !important;
+  }
+  
+  /* กำหนดรูปแบบของ Toast สำหรับการแสดงข้อความข้อมูล */
+  [data-sonner-toast][data-type="info"] [data-description] {
+    color: white !important;
+  }
+  
+  /* กำหนดรูปแบบของ Toast สำหรับการแสดงข้อความคำเตือน */
+  [data-sonner-toast][data-type="warning"] [data-description] {
+    color: white !important;
   }
 }

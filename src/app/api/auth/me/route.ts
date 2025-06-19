@@ -2,9 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { verifyToken } from '@/lib/auth'
 
+// สร้าง route สำหรับการตรวจสอบการยืนยันตัวตน
+// URL: /api/auth/me
+// Method: GET
+// Response: { user: { id: string, fullName: string, email: string, phoneNumber: string, createdAt: string } }
 export async function GET(request: NextRequest) {
   try {
-    // Get token from cookie
+    // รับ token จาก cookie
     const token = request.cookies.get('auth-token')?.value
     
     if (!token) {
@@ -14,7 +18,7 @@ export async function GET(request: NextRequest) {
       )
     }
     
-    // Verify token
+    // ตรวจสอบ token
     const decoded = verifyToken(token)
     
     if (!decoded) {
@@ -24,7 +28,7 @@ export async function GET(request: NextRequest) {
       )
     }
     
-    // Get user from database
+    // ตรวจสอบว่ามีผู้ใช้งานที่มี id นี้อยู่ในระบบหรือไม่
     const user = await prisma.user.findUnique({
       where: {
         id: decoded.userId
@@ -39,6 +43,7 @@ export async function GET(request: NextRequest) {
       }
     })
     
+    // ถ้ามีผู้ใช้งานที่มี id นี้อยู่ในระบบ จะส่งข้อมูลผู้ใช้งานกลับไปยัง client
     if (!user) {
       return NextResponse.json(
         { error: "ไม่พบข้อมูลผู้ใช้" },
@@ -46,13 +51,15 @@ export async function GET(request: NextRequest) {
       )
     }
     
+    // ส่งข้อมูลผู้ใช้งานกลับไปยัง client
     return NextResponse.json({
       user
     }, { status: 200 })
     
   } catch (error) {
-    console.error('Auth check error:', error)
-    
+    console.error('การตรวจสอบการยืนยันตัวตน error:', error)
+
+    // ถ้ามีข้อผิดพลาดจากการตรวจสอบการยืนยันตัวตน จะส่งข้อมูลกลับไปยัง client
     return NextResponse.json(
       { error: "เกิดข้อผิดพลาดในการตรวจสอบการยืนยันตัวตน" },
       { status: 500 }

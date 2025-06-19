@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { AuthProvider } from "@/hooks/useAuth"
 import "./globals.css"
 
+// กำหนด font ของระบบ
 const inter = Inter({ 
   subsets: ["latin"],
   variable: "--font-inter"
@@ -15,6 +16,7 @@ const anuphan = Anuphan({
   variable: "--font-anuphan"
 })
 
+// กำหนด metadata ของระบบ
 export const metadata: Metadata = {
   title: {
     template: `%s - ${APP_CONFIG.appName}`,
@@ -24,6 +26,7 @@ export const metadata: Metadata = {
   keywords: APP_CONFIG.meta.keywords.join(", "),
 }
 
+// กำหนด layout ของระบบ
 export default function RootLayout({
   children,
 }: Readonly<{
