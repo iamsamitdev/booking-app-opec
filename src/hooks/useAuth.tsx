@@ -3,6 +3,7 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react'
 import { AuthUser } from '@/lib/auth'
 
+// สร้าง interface สำหรับการจัดการการยืนยันตัวตน
 interface AuthContextType {
   user: AuthUser | null
   isLoading: boolean
@@ -12,6 +13,7 @@ interface AuthContextType {
   checkAuth: () => Promise<void>
 }
 
+// สร้าง interface RegisterData สำหรับการจัดการการยืนยันตัวตน
 interface RegisterData {
   fullName: string
   email: string
@@ -19,12 +21,15 @@ interface RegisterData {
   password: string
 }
 
+// สร้าง context สำหรับการจัดการการยืนยันตัวตน
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
+// สร้าง component สำหรับการจัดการการยืนยันตัวตน
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
+  // สร้างฟังก์ชันสำหรับการตรวจสอบการยืนยันตัวตน
   const checkAuth = async () => {
     try {
       const response = await fetch('/api/auth/me')
@@ -42,6 +47,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  // สร้างฟังก์ชันสำหรับการเข้าสู่ระบบ
   const login = async (email: string, password: string, remember = false) => {
     setIsLoading(true)
     try {
@@ -68,6 +74,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  // สร้างฟังก์ชันสำหรับการสมัครสมาชิก
   const register = async (registerData: RegisterData) => {
     setIsLoading(true)
     try {
@@ -94,6 +101,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  // สร้างฟังก์ชันสำหรับการออกจากระบบ
   const logout = async () => {
     try {
       await fetch('/api/auth/logout', {
@@ -106,10 +114,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  // สร้างฟังก์ชันสำหรับการตรวจสอบการยืนยันตัวตน
   useEffect(() => {
     checkAuth()
   }, [])
 
+  // กำหนดตัวแปรไว้สำหรับการจัดการการยืนยันตัวตน
   const value = {
     user,
     isLoading,
@@ -119,6 +129,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     checkAuth,
   }
 
+  // สร้างฟังก์ชันสำหรับการจัดการการยืนยันตัวตน
   return (
     <AuthContext.Provider value={value}>
       {children}
@@ -126,6 +137,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   )
 }
 
+// สร้างฟังก์ชันสำหรับการจัดการการยืนยันตัวตน
 export function useAuth() {
   const context = useContext(AuthContext)
   if (context === undefined) {
