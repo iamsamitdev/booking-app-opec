@@ -360,7 +360,7 @@ function Navbar() {
                           {/* Menu Items */}
                           <div className="space-y-1">
                             <Link
-                              href="/dashboard"
+                              href="/admin/dashboard"
                               onClick={() => setIsProfileMenuOpen(false)}
                               className="block px-4 py-3 text-white/90 hover:text-white transition-all duration-300 text-sm relative overflow-hidden group rounded-xl hover:bg-white/10 hover:backdrop-blur-sm hover:shadow-lg hover:shadow-white/15"
                             >
@@ -596,7 +596,7 @@ function Navbar() {
                   {/* Menu Items */}
                   <div className="space-y-2">
                     <Link
-                      href="/dashboard"
+                      href="/admin/dashboard"
                       onClick={closeMobileMenu}
                       className="flex items-center gap-3 p-4 rounded-xl text-gray-600 hover:bg-gray-100 transition-all duration-300"
                     >

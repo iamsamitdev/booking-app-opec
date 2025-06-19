@@ -72,8 +72,8 @@ export function RegisterForm() {
         descriptionClassName: "!text-white",
       })
 
-      // Redirect to home page or dashboard
-      router.push("/")
+      // Redirect to login page
+      router.push("/auth/login")
     } catch (error) {
       toast.error("เกิดข้อผิดพลาด", {
         description: error instanceof Error ? error.message : "ไม่สามารถสมัครสมาชิกได้ กรุณาลองใหม่อีกครั้ง",

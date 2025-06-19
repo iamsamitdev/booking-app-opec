@@ -133,17 +133,17 @@
   [data-sonner-toast][data-type="success"] [data-description] {
     color: white !important;
   }
-  
+
   /* กำหนดรูปแบบของ Toast สำหรับการแสดงข้อความผิดพลาด */
   [data-sonner-toast][data-type="error"] [data-description] {
     color: white !important;
   }
-  
+
   /* กำหนดรูปแบบของ Toast สำหรับการแสดงข้อความข้อมูล */
   [data-sonner-toast][data-type="info"] [data-description] {
     color: white !important;
   }
-  
+
   /* กำหนดรูปแบบของ Toast สำหรับการแสดงข้อความคำเตือน */
   [data-sonner-toast][data-type="warning"] [data-description] {
     color: white !important;
