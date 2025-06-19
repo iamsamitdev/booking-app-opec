@@ -3,6 +3,7 @@ import { Inter, Anuphan } from "next/font/google"
 import { ThemeProvider } from "next-themes"
 import { APP_CONFIG } from "@/config/app-config"
 import { Toaster } from "@/components/ui/sonner"
+import { AuthProvider } from "@/hooks/useAuth"
 import "./globals.css"
 
 const inter = Inter({ 
@@ -37,8 +38,10 @@ export default function RootLayout({
         }}
       >
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
-          {children}
-          <Toaster />
+          <AuthProvider>
+            {children}
+            <Toaster />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

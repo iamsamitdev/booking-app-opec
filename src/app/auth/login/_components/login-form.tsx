@@ -5,11 +5,14 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useAuth } from "@/hooks/useAuth"
 
 const FormSchema = z.object({
   email: z.string().email({ message: "กรุณากรอกอีเมลให้ถูกต้อง" }),
@@ -18,6 +21,10 @@ const FormSchema = z.object({
 })
 
 export function LoginForm() {
+  const { login } = useAuth()
+  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -28,13 +35,25 @@ export function LoginForm() {
   })
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    toast("ข้อมูลที่คุณส่ง", {
-      description: (
-        <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
+    if (isLoading) return
+
+    setIsLoading(true)
+    try {
+      await login(data.email, data.password, data.remember)
+
+      toast.success("เข้าสู่ระบบสำเร็จ!", {
+        description: "ยินดีต้อนรับกลับมา",
+      })
+
+      // Redirect to home page or dashboard
+      router.push("/")
+    } catch (error) {
+      toast.error("เกิดข้อผิดพลาด", {
+        description: error instanceof Error ? error.message : "ไม่สามารถเข้าสู่ระบบได้ กรุณาลองใหม่อีกครั้ง",
+      })
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -96,8 +115,8 @@ export function LoginForm() {
             ลืมรหัสผ่าน?
           </Link>
         </div>
-        <Button className="w-full" type="submit">
-          เข้าสู่ระบบ
+        <Button className="w-full" type="submit" disabled={isLoading}>
+          {isLoading ? "กำลังเข้าสู่ระบบ..." : "เข้าสู่ระบบ"}
         </Button>
       </form>
     </Form>
