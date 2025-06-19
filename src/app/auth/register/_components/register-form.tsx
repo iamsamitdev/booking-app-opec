@@ -16,11 +16,11 @@ import { useAuth } from "@/hooks/useAuth"
 
 const FormSchema = z
   .object({
-    fullName: z.string().min(2, { message: "กรุณากรอกชื่อ-สกุลอย่างน้อย 2 ตัวอักษร" }),
-    phoneNumber: z.string().min(10, { message: "กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง (10 หลัก)" }).regex(/^[0-9]+$/, { message: "เบอร์โทรศัพท์ต้องเป็นตัวเลขเท่านั้น" }),
+    fullName: z.string().min(2, { message: "ชื่อ-สกุลอย่างน้อย 2 ตัวอักษร" }),
+    phoneNumber: z.string().min(10, { message: "เบอร์โทรศัพท์ให้ถูกต้อง (10 หลัก)" }).regex(/^[0-9]+$/, { message: "เบอร์โทรศัพท์ต้องเป็นตัวเลขเท่านั้น" }),
     email: z.string().email({ message: "กรุณากรอกอีเมลให้ถูกต้อง" }),
     password: z.string().min(6, { message: "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร" }),
-    confirmPassword: z.string().min(6, { message: "กรุณายืนยันรหัสผ่านอย่างน้อย 6 ตัวอักษร" }),
+    confirmPassword: z.string().min(6, { message: "กรุณายืนยันรหัสผ่านก่อน" }),
     acceptTerms: z.boolean().refine((val) => val === true, {
       message: "กรุณายอมรับข้อกำหนดการใช้งานและนโยบายความเป็นส่วนตัว",
     }),
@@ -77,32 +77,37 @@ export function RegisterForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="fullName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>ชื่อ-สกุล</FormLabel>
-              <FormControl>
-                <Input id="fullName" type="text" placeholder="ชื่อ สกุล" autoComplete="name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="phoneNumber"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>เบอร์โทรศัพท์</FormLabel>
-              <FormControl>
-                <Input id="phoneNumber" type="tel" placeholder="0812345678" autoComplete="tel" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {/* ชื่อ-สกุล และ เบอร์โทรศัพท์ */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="fullName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>ชื่อ-สกุล</FormLabel>
+                <FormControl>
+                  <Input id="fullName" type="text" placeholder="ชื่อ สกุล" autoComplete="name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="phoneNumber"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>เบอร์โทรศัพท์</FormLabel>
+                <FormControl>
+                  <Input id="phoneNumber" type="tel" placeholder="0812345678" autoComplete="tel" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        
+        {/* อีเมล */}
         <FormField
           control={form.control}
           name="email"
@@ -116,38 +121,42 @@ export function RegisterForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>รหัสผ่าน</FormLabel>
-              <FormControl>
-                <Input id="password" type="password" placeholder="••••••••" autoComplete="new-password" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="confirmPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>ยืนยันรหัสผ่าน</FormLabel>
-              <FormControl>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  placeholder="••••••••"
-                  autoComplete="new-password"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        
+        {/* รหัสผ่าน และ ยืนยันรหัสผ่าน */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>รหัสผ่าน</FormLabel>
+                <FormControl>
+                  <Input id="password" type="password" placeholder="••••••••" autoComplete="new-password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>ยืนยันรหัสผ่าน</FormLabel>
+                <FormControl>
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    placeholder="••••••••"
+                    autoComplete="new-password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <FormField
           control={form.control}
           name="acceptTerms"
