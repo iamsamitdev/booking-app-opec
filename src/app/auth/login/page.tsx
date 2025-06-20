@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 }
 
 export default function Login() {
+
   return (
     <div className="flex h-dvh relative">
       {/* Back to Home Link */}
@@ -61,12 +62,7 @@ export default function Login() {
             </div>
           </div>
           <div className="space-y-4">
-            <Suspense fallback={<div className="space-y-4">
-              <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
-              <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
-              <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
-              <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
-            </div>}>
+            <Suspense fallback={<LoginFormSkeleton />}>
               <LoginForm />
             </Suspense>
             <Button className="w-full" variant="outline">
@@ -81,6 +77,26 @@ export default function Login() {
           </div>
         </div>
       </div>
+    </div>
+  )
+}
+
+function LoginFormSkeleton() {
+  return (
+    <div className="space-y-4 animate-pulse">
+      <div className="space-y-2">
+        <div className="h-4 bg-gray-200 rounded w-20"></div>
+        <div className="h-10 bg-gray-200 rounded"></div>
+      </div>
+      <div className="space-y-2">
+        <div className="h-4 bg-gray-200 rounded w-16"></div>
+        <div className="h-10 bg-gray-200 rounded"></div>
+      </div>
+      <div className="flex justify-between">
+        <div className="h-4 bg-gray-200 rounded w-24"></div>
+        <div className="h-4 bg-gray-200 rounded w-20"></div>
+      </div>
+      <div className="h-10 bg-gray-200 rounded"></div>
     </div>
   )
 }
